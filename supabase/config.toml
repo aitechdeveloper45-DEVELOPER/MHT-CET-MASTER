@@ -1,7 +1,1 @@
-project_id = "nzqthnolnulthanahzgo"
-
-[functions.generate-mcq-test]
-verify_jwt = true
-
-[functions.become-admin]
-verify_jwt = true
+project_id = "hnlbcujrgduooiufvdge"
