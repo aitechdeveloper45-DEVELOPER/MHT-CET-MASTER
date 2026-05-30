@@ -14,7 +14,6 @@ import { clearSessionCookie } from "@/lib/sessionBackup";
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
