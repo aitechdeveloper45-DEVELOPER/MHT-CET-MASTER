@@ -280,68 +280,6 @@ const Auth = () => {
     }
   };
 
-  // Detect if running inside a WebView (Appyzeen, Capacitor, etc.)
-  const isWebView = () => {
-    const ua = navigator.userAgent || '';
-    return /wv|WebView|AppyzeenWebView/i.test(ua) || 
-           // Android WebView detection
-           (/Android/.test(ua) && /Version\/[\d.]+/.test(ua) && !/Chrome\/[\d.]+ Mobile Safari/.test(ua)) ||
-           // iOS WebView detection  
-           (/(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(ua)) ||
-           // Standalone PWA or TWA
-           (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
-  };
-
-  const handleGoogleSignIn = async () => {
-    setIsGoogleLoading(true);
-    
-    // Auto-reset loading after 8 seconds (covers redirect/network failure cases)
-    const resetTimer = setTimeout(() => setIsGoogleLoading(false), 8000);
-    
-    try {
-      if (isWebView()) {
-        const oauthUrl = `${window.location.origin}/auth?google_oauth=true`;
-        window.open(oauthUrl, '_system');
-        
-        const { error } = await lovable.auth.signInWithOAuth("google", {
-          redirect_uri: window.location.origin,
-        });
-        if (error) {
-          clearTimeout(resetTimer);
-          toast({
-            title: "Error",
-            description: "Google sign-in may not work inside the app. Try opening in your phone's browser.",
-            variant: "destructive",
-          });
-          setIsGoogleLoading(false);
-        }
-      } else {
-        const { error } = await lovable.auth.signInWithOAuth("google", {
-          redirect_uri: window.location.origin,
-        });
-        if (error) {
-          clearTimeout(resetTimer);
-          toast({
-            title: "Error",
-            description: error.message === "Failed to fetch" 
-              ? "Network error. Please check your internet connection and try again."
-              : error.message || "Google sign-in failed",
-            variant: "destructive",
-          });
-          setIsGoogleLoading(false);
-        }
-      }
-    } catch (err: any) {
-      clearTimeout(resetTimer);
-      toast({
-        title: "Error",
-        description: "Network error. Please check your internet connection and try again.",
-        variant: "destructive",
-      });
-      setIsGoogleLoading(false);
-    }
-  };
-
   // Show loading while checking existing session
   if (isCheckingSession) {
     return (
