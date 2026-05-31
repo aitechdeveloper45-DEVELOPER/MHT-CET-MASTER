@@ -45,14 +45,14 @@ Deno.serve(async (req) => {
       supabase.from("subject_progress").select("*").eq("user_id", userId),
       supabase.from("test_results").select("test_name,subject,score,max_score,created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(10),
       supabase.from("topic_progress").select("subject,topic_name,questions_attempted,questions_correct").eq("user_id", userId),
-      supabase.from("mentor_messages").select("role,content").eq("user_id", userId).order("created_at", { ascending: true }).limit(30),
+      supabase.from("mentor_messages").select("role,content").eq("user_id", userId).order("created_at", { ascending: false }).limit(10),
     ]);
 
     const stats = statsRes.data;
     const subjects = subjRes.data ?? [];
     const tests = testsRes.data ?? [];
     const topics = topicsRes.data ?? [];
-    const history = historyRes.data ?? [];
+    const history = (historyRes.data ?? []).reverse();
 
     const daysLeft = Math.max(0, Math.ceil((EXAM_DATE.getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
 
@@ -103,7 +103,7 @@ When the user asks for a plan, generate concrete daily/weekly schedules referenc
         "Authorization": `Bearer ${Deno.env.get("LOVABLE_API_KEY")}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
+        model: "google/gemini-2.5-flash-lite",
         messages,
       }),
     });
