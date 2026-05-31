@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      flashcards: {
+        Row: {
+          card_type: string
+          chapter: string
+          content: Json
+          created_at: string
+          id: string
+          subject: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          card_type: string
+          chapter: string
+          content?: Json
+          created_at?: string
+          id?: string
+          subject: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          card_type?: string
+          chapter?: string
+          content?: Json
+          created_at?: string
+          id?: string
+          subject?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       mentor_messages: {
         Row: {
           content: string
@@ -211,6 +244,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      user_flashcard_progress: {
+        Row: {
+          created_at: string
+          flashcard_id: string
+          id: string
+          is_favorite: boolean
+          last_seen_at: string | null
+          seen_count: number
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          flashcard_id: string
+          id?: string
+          is_favorite?: boolean
+          last_seen_at?: string | null
+          seen_count?: number
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          flashcard_id?: string
+          id?: string
+          is_favorite?: boolean
+          last_seen_at?: string | null
+          seen_count?: number
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_flashcard_progress_flashcard_id_fkey"
+            columns: ["flashcard_id"]
+            isOneToOne: false
+            referencedRelation: "flashcards"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

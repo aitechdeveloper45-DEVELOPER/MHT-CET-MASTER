@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Test from "./pages/Test";
 import Mentor from "./pages/Mentor";
+import Flashcards from "./pages/Flashcards";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Terms from "./pages/Terms";
 import DeleteAccount from "./pages/DeleteAccount";
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/profile" element={<Profile />} />
             <Route path="/test" element={<Test />} />
             <Route path="/mentor" element={<Mentor />} />
+            <Route path="/flashcards" element={<Flashcards />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/contact-support" element={<ContactSupport />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
