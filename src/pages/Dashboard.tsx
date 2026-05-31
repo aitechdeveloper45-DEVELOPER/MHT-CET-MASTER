@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Clock, Target, Trophy, TrendingUp, LogOut, Brain, Calendar, Zap, Loader2, Shield, MoreVertical, User, Award, AlertTriangle, Sparkles } from "lucide-react";
+import { BookOpen, Clock, Target, Trophy, TrendingUp, LogOut, Brain, Calendar, Zap, Loader2, Shield, MoreVertical, User, Award, AlertTriangle, Sparkles, Layers } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -447,6 +447,16 @@ const Dashboard = () => {
                 <Sparkles className="h-3.5 w-3.5" />
                 <span className="hidden sm:inline">AI Mentor</span>
                 <span className="sm:hidden">Mentor</span>
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                className="h-8 sm:h-9 gap-1.5"
+                onClick={() => navigate("/flashcards")}
+              >
+                <Layers className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">Flashcards</span>
+                <span className="sm:hidden">Cards</span>
               </Button>
             </div>
           </div>
