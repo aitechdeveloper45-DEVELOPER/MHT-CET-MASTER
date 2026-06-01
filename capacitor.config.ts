@@ -8,6 +8,14 @@ const config: CapacitorConfig = {
     AdMob: {
       appId: 'ca-app-pub-7641092018364594~2359083953',
     },
+    EdgeToEdge: {
+      backgroundColor: '#1a1a2e',
+    },
+    StatusBar: {
+      overlaysWebView: true,
+      style: 'DARK',
+      backgroundColor: '#00000000',
+    },
   },
 };
 
