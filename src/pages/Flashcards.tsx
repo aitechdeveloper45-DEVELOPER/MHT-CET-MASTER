@@ -14,6 +14,7 @@ import {
   Sparkles, Flame, Brain, Loader2, Calendar, Trophy,
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import AdGate from "@/components/AdGate";
 
 type Subject = "Physics" | "Chemistry" | "Mathematics";
 type Status = "new" | "learned" | "difficult";
@@ -50,6 +51,7 @@ const hashDate = (n: number) => {
 const Flashcards = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [adDone, setAdDone] = useState(false);
   const [cards, setCards] = useState<Flashcard[]>([]);
   const [progress, setProgress] = useState<Record<string, Progress>>({});
   const [subject, setSubject] = useState<Subject>("Physics");
@@ -205,6 +207,8 @@ const Flashcards = () => {
   }
 
   return (
+    <>
+    {!adDone && <AdGate onComplete={() => setAdDone(true)} />}
     <div className="min-h-[100dvh] bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
       <header className="sticky top-0 z-10 border-b bg-card/80 backdrop-blur-sm">
