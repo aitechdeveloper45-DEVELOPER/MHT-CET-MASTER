@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Sparkles } from "lucide-react";
+import { isNative, showInterstitial } from "@/lib/ads";
 
 interface AdGateProps {
   duration?: number;
@@ -9,6 +10,18 @@ interface AdGateProps {
 
 const AdGate = ({ duration = 5, label = "Sponsored", onComplete }: AdGateProps) => {
   const [remaining, setRemaining] = useState(duration);
+
+  // On native: try real AdMob interstitial; fall back to in-app overlay countdown.
+  useEffect(() => {
+    let cancelled = false;
+    if (isNative()) {
+      showInterstitial().then((ok) => {
+        if (!cancelled && ok) onComplete();
+      });
+    }
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (remaining <= 0) {
