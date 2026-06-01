@@ -202,7 +202,6 @@ const Mentor = () => {
         </div>
       </div>
     </div>
-  );
     </>
   );
 };
