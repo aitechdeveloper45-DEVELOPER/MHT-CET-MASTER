@@ -427,6 +427,7 @@ const Flashcards = () => {
         </DialogContent>
       </Dialog>
     </div>
+    </>
   );
 };
 

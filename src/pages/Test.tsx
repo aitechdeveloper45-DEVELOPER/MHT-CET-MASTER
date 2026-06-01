@@ -8,6 +8,7 @@ import { Clock, CheckCircle2, Home, AlertCircle } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import AdGate from "@/components/AdGate";
 
 const Test = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const Test = () => {
   const [showResults, setShowResults] = useState(false);
   const [questions, setQuestions] = useState<any[]>([]);
   const [testConfig, setTestConfig] = useState<any>(null);
+  const [resultsAdDone, setResultsAdDone] = useState(false);
 
   useEffect(() => {
     // Get questions from navigation state, falling back to sessionStorage
@@ -356,6 +358,8 @@ const Test = () => {
     const percentage = totalQuestions > 0 ? ((score / totalQuestions) * 100).toFixed(1) : 0;
     
     return (
+      <>
+      {!resultsAdDone && <AdGate onComplete={() => setResultsAdDone(true)} />}
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 p-3 sm:p-4">
         <div className="container mx-auto max-w-4xl py-4 sm:py-8">
           <Card>
@@ -441,6 +445,7 @@ const Test = () => {
           </Card>
         </div>
       </div>
+      </>
     );
   }
 
