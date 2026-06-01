@@ -2,6 +2,21 @@ import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { restoreSessionFromCookie } from "@/lib/sessionBackup";
+import { EdgeToEdge } from "@capawesome/capacitor-android-edge-to-edge-support";
+import { StatusBar, Style } from "@capacitor/status-bar";
+import { Capacitor } from "@capacitor/core";
+
+const setupEdgeToEdge = async () => {
+  if (!Capacitor.isNativePlatform()) return;
+  try {
+    await EdgeToEdge.enable();
+    await EdgeToEdge.setBackgroundColor({ color: '#00000000' });
+  } catch {}
+  try {
+    await StatusBar.setOverlaysWebView({ overlay: true });
+    await StatusBar.setStyle({ style: Style.Dark });
+  } catch {}
+};
 
 const mount = () => createRoot(document.getElementById("root")!).render(<App />);
 
@@ -24,4 +39,5 @@ withTimeout(restoreSessionFromCookie(), 2000)
   .finally(() => {
     mount();
     requestPersistentStorage();
+    setupEdgeToEdge();
   });
