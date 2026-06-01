@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Send, Trash2, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import AdGate from "@/components/AdGate";
 
 interface MentorMessage {
   id?: string;
@@ -38,6 +39,7 @@ const Mentor = () => {
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [adDone, setAdDone] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -91,6 +93,8 @@ const Mentor = () => {
   };
 
   return (
+    <>
+    {!adDone && <AdGate onComplete={() => setAdDone(true)} />}
     <div className="flex flex-col h-[100dvh] bg-gradient-to-br from-background via-background to-primary/5">
       <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-3 py-3 flex items-center justify-between gap-2">
