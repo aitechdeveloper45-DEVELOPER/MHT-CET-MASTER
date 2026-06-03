@@ -95,7 +95,7 @@ const Mentor = () => {
   return (
     <>
     {!adDone && <AdGate onComplete={() => setAdDone(true)} />}
-    <div className="flex flex-col h-[100dvh] bg-gradient-to-br from-background via-background to-primary/5">
+    <div className="fixed inset-0 flex flex-col bg-gradient-to-br from-background via-background to-primary/5" style={{ paddingTop: 'env(safe-area-inset-top)', paddingBottom: 'env(safe-area-inset-bottom)', paddingLeft: 'env(safe-area-inset-left)', paddingRight: 'env(safe-area-inset-right)' }}>
       <header className="border-b bg-card/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-3 py-3 flex items-center justify-between gap-2">
           <Button variant="ghost" size="icon" onClick={() => navigate("/dashboard")} className="h-9 w-9">
