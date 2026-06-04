@@ -13,6 +13,7 @@
         "@capacitor/ios": "^8.0.0",
         "@capacitor/status-bar": "^8.0.2",
         "@capawesome/capacitor-android-edge-to-edge-support": "^8.0.8",
+        "@capawesome/capacitor-app-update": "^8.0.3",
         "@hookform/resolvers": "^3.10.0",
         "@lovable.dev/cloud-auth-js": "^1.0.0",
         "@radix-ui/react-accordion": "^1.2.11",
@@ -115,6 +116,8 @@
     "@capacitor/status-bar": ["@capacitor/status-bar@8.0.2", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@capacitor/status-bar/-/status-bar-8.0.2.tgz", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-WXs8YB8B9eEaPZz+bcdY6t2nForF1FLoj/JU0Dl9RRgQnddnS98FEEyDooQhaY7wivr000j4+SC1FyeJkrFO7A=="],
 
     "@capawesome/capacitor-android-edge-to-edge-support": ["@capawesome/capacitor-android-edge-to-edge-support@8.0.8", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@capawesome/capacitor-android-edge-to-edge-support/-/capacitor-android-edge-to-edge-support-8.0.8.tgz", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-+eKz15uhfOwft5IRZFL1QQZT/FHeeE5scNnlP9CIMrhW0Ctc9cJM13Ec2vOTd9oYGz3mCF3kf39C2spDDuSUVw=="],
+
+    "@capawesome/capacitor-app-update": ["@capawesome/capacitor-app-update@8.0.3", "https://europe-west4-npm.pkg.dev/lovable-core-prod/sandbox-npm-cache/@capawesome/capacitor-app-update/-/capacitor-app-update-8.0.3.tgz", { "peerDependencies": { "@capacitor/core": ">=8.0.0" } }, "sha512-5pS9I+i2TuUl8b6L3h2WsWF/PE68exzoc9CciXK/I2SdB2fIkdxObrYBeYS2Z09ndCGqJgx4iwZJmhXwVcMh4w=="],
 
     "@esbuild/aix-ppc64": ["@esbuild/aix-ppc64@0.25.0", "", { "os": "aix", "cpu": "ppc64" }, "sha512-O7vun9Sf8DFjH2UtqK8Ku3LkquL9SZL8OLY1T5NZkA34+wG3OQF7cl4Ql8vdNzM6fzBbYfLaiRLIOZ+2FOCgBQ=="],
 
