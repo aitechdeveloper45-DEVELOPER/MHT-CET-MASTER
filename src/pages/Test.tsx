@@ -142,6 +142,9 @@ const Test = () => {
           // Update topic progress
           await updateTopicProgress(user.id);
           
+          // Notify rating prompt of a completed test
+          window.dispatchEvent(new CustomEvent("test-completed"));
+
           toast({
             title: "Test Submitted!",
             description: `Your score: ${score}/${maxScore} (${((score / maxScore) * 100).toFixed(1)}%)`,

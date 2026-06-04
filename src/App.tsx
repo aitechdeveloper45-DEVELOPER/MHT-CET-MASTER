@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import SessionBackupListener from "@/components/SessionBackupListener";
 import BannerAd from "@/components/BannerAd";
+import RatingPrompt from "@/components/RatingPrompt";
 import Index from "./pages/Index";
 import Settings from "./pages/Settings";
 import ContactSupport from "./pages/ContactSupport";
@@ -55,6 +56,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
           <BannerAd />
+          <RatingPrompt />
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
