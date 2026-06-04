@@ -22,6 +22,7 @@ const QUICK_PROMPTS = [
   "Improve Physics",
   "Improve Chemistry",
   "Improve Maths",
+  "Improve Biology",
 ];
 
 const QUICK_PROMPT_TEXT: Record<string, string> = {
@@ -31,6 +32,7 @@ const QUICK_PROMPT_TEXT: Record<string, string> = {
   "Improve Physics": "I want to improve my Physics score. What should I do?",
   "Improve Chemistry": "I want to improve my Chemistry score. What should I do?",
   "Improve Maths": "I want to improve my Mathematics score. What should I do?",
+  "Improve Biology": "I want to improve my Biology score. What should I do?",
 };
 
 const Mentor = () => {
