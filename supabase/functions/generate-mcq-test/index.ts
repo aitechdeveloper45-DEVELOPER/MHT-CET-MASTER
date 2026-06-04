@@ -96,10 +96,10 @@ serve(async (req) => {
     }
 
     // Validate subject
-    const validSubjects = ['Physics', 'Chemistry', 'Mathematics'];
+    const validSubjects = ['Physics', 'Chemistry', 'Mathematics', 'Biology'];
     if (subject !== undefined && !validSubjects.includes(subject)) {
       return new Response(
-        JSON.stringify({ error: 'Invalid subject. Must be Physics, Chemistry, or Mathematics' }),
+        JSON.stringify({ error: 'Invalid subject. Must be Physics, Chemistry, Mathematics, or Biology' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
