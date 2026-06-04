@@ -28,6 +28,10 @@ const syllabusTopics: Record<string, { xi: string[]; xii: string[] }> = {
   Mathematics: {
     xi: ["Trigonometric Functions", "Trigonometric Functions of Compound Angles", "Factorization Formulae", "Straight Line", "Circle and Conics", "Sets, Relations and Functions", "Probability", "Sequences and Series"],
     xii: ["Mathematical Logic", "Matrices", "Trigonometric Functions", "Pair of Straight Lines", "Circle", "Conics", "Vectors", "Three Dimensional Geometry", "Line", "Plane", "Linear Programming", "Continuity", "Differentiation", "Application of Derivatives", "Integration", "Application of Definite Integral", "Differential Equations", "Probability Distribution", "Binomial Distribution"]
+  },
+  Biology: {
+    xi: ["Diversity in Organisms", "Kingdom Plantae", "Kingdom Animalia", "Biochemistry of Cell", "Cell Division", "Plant Tissues and Anatomy", "Morphology of Flowering Plants", "Animal Tissues", "Photosynthesis", "Respiration", "Human Nutrition", "Excretion and Osmoregulation"],
+    xii: ["Reproduction in Lower and Higher Plants", "Reproduction in Lower and Higher Animals", "Inheritance and Variation", "Molecular Basis of Inheritance", "Origin and Evolution of Life", "Plant Water Relation", "Plant Growth and Mineral Nutrition", "Respiration and Circulation", "Control and Co-ordination", "Human Health and Diseases", "Enhancement of Food Production", "Biotechnology", "Organisms and Populations", "Ecosystems and Energy Flow", "Biodiversity, Conservation and Environmental Issues"]
   }
 };
 
@@ -39,6 +43,8 @@ const ProgressTracker = ({ topicProgress }: ProgressTrackerProps) => {
     "Chemistry-xii": true,
     "Mathematics-xi": false,
     "Mathematics-xii": true,
+    "Biology-xi": false,
+    "Biology-xii": true,
   });
 
   const toggleSection = (key: string) => {
@@ -141,7 +147,7 @@ const ProgressTracker = ({ topicProgress }: ProgressTrackerProps) => {
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="Physics" className="w-full">
-          <TabsList className="w-full grid grid-cols-3 mb-4">
+          <TabsList className="w-full grid grid-cols-4 mb-4">
             {Object.keys(syllabusTopics).map(subject => {
               const stats = getSubjectStats(subject);
               return (
