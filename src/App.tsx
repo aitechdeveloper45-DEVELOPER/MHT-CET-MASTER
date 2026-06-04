@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes";
 import SessionBackupListener from "@/components/SessionBackupListener";
 import BannerAd from "@/components/BannerAd";
 import RatingPrompt from "@/components/RatingPrompt";
+import UpdatePrompt from "@/components/UpdatePrompt";
 import Index from "./pages/Index";
 import Settings from "./pages/Settings";
 import ContactSupport from "./pages/ContactSupport";
@@ -57,6 +58,7 @@ const App = () => (
           </Routes>
           <BannerAd />
           <RatingPrompt />
+          <UpdatePrompt />
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
