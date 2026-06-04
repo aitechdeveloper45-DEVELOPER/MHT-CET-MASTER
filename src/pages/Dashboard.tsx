@@ -585,13 +585,14 @@ const Dashboard = () => {
                 {/* Subject-wise tab */}
                 <TabsContent value="subject" className="mt-0">
                   <Tabs defaultValue="Mathematics" onValueChange={setSelectedSubject}>
-                    <TabsList className="grid w-full grid-cols-3 h-auto">
+                    <TabsList className="grid w-full grid-cols-4 h-auto">
                       <TabsTrigger value="Mathematics" className="text-xs sm:text-sm py-2">Maths</TabsTrigger>
                       <TabsTrigger value="Physics" className="text-xs sm:text-sm py-2">Physics</TabsTrigger>
-                      <TabsTrigger value="Chemistry" className="text-xs sm:text-sm py-2">Chemistry</TabsTrigger>
+                      <TabsTrigger value="Chemistry" className="text-xs sm:text-sm py-2">Chem</TabsTrigger>
+                      <TabsTrigger value="Biology" className="text-xs sm:text-sm py-2">Biology</TabsTrigger>
                     </TabsList>
 
-                    {["Mathematics", "Physics", "Chemistry"].map((subject) => (
+                    {["Mathematics", "Physics", "Chemistry", "Biology"].map((subject) => (
                       <TabsContent key={subject} value={subject} className="space-y-3 sm:space-y-4 mt-3 sm:mt-4">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                           <div className="space-y-2">
@@ -690,6 +691,7 @@ const Dashboard = () => {
                           <SelectItem value="Mathematics">Mathematics</SelectItem>
                           <SelectItem value="Physics">Physics</SelectItem>
                           <SelectItem value="Chemistry">Chemistry</SelectItem>
+                          <SelectItem value="Biology">Biology</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>

@@ -1,6 +1,6 @@
 // MHT-CET chapter lists per Class & Subject (Maharashtra State Board)
 export type StudyClass = "XI" | "XII";
-export type CetSubject = "Physics" | "Chemistry" | "Mathematics";
+export type CetSubject = "Physics" | "Chemistry" | "Mathematics" | "Biology";
 
 export const CHAPTERS: Record<StudyClass, Record<CetSubject, string[]>> = {
   XI: {
@@ -47,6 +47,21 @@ export const CHAPTERS: Record<StudyClass, Record<CetSubject, string[]>> = {
       "Limits",
       "Continuity",
       "Differentiation",
+    ],
+    Biology: [
+      "Diversity in Organisms",
+      "Kingdom Plantae",
+      "Kingdom Animalia",
+      "Biochemistry of Cell",
+      "Cell Division",
+      "Plant Tissues and Anatomy",
+      "Morphology of Flowering Plants",
+      "Animal Tissues",
+      "Study of Animal Type - Cockroach",
+      "Photosynthesis",
+      "Respiration",
+      "Human Nutrition",
+      "Excretion and Osmoregulation",
     ],
   },
   XII: {
@@ -102,6 +117,23 @@ export const CHAPTERS: Record<StudyClass, Record<CetSubject, string[]>> = {
       "Differential Equations",
       "Probability Distributions",
       "Binomial Distribution",
+    ],
+    Biology: [
+      "Reproduction in Lower and Higher Plants",
+      "Reproduction in Lower and Higher Animals",
+      "Inheritance and Variation",
+      "Molecular Basis of Inheritance",
+      "Origin and Evolution of Life",
+      "Plant Water Relation",
+      "Plant Growth and Mineral Nutrition",
+      "Respiration and Circulation",
+      "Control and Co-ordination",
+      "Human Health and Diseases",
+      "Enhancement of Food Production",
+      "Biotechnology",
+      "Organisms and Populations",
+      "Ecosystems and Energy Flow",
+      "Biodiversity, Conservation and Environmental Issues",
     ],
   },
 };

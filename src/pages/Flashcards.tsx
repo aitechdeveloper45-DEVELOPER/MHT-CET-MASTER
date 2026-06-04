@@ -16,7 +16,7 @@ import {
 import { toast } from "@/hooks/use-toast";
 import AdGate from "@/components/AdGate";
 
-type Subject = "Physics" | "Chemistry" | "Mathematics";
+type Subject = "Physics" | "Chemistry" | "Mathematics" | "Biology";
 type Status = "new" | "learned" | "difficult";
 
 interface Flashcard {
@@ -34,11 +34,12 @@ interface Progress {
   seen_count: number;
 }
 
-const SUBJECTS: Subject[] = ["Physics", "Chemistry", "Mathematics"];
+const SUBJECTS: Subject[] = ["Physics", "Chemistry", "Mathematics", "Biology"];
 const SUBJECT_COLOR: Record<Subject, string> = {
   Physics: "from-blue-500/20 to-cyan-500/10 border-blue-500/30",
   Chemistry: "from-emerald-500/20 to-teal-500/10 border-emerald-500/30",
   Mathematics: "from-purple-500/20 to-pink-500/10 border-purple-500/30",
+  Biology: "from-green-500/20 to-lime-500/10 border-green-500/30",
 };
 
 // Deterministic pick for Formula of the Day
@@ -231,7 +232,7 @@ const Flashcards = () => {
       <div className="container mx-auto px-3 py-3 max-w-2xl space-y-3">
         {/* Subject tabs */}
         <Tabs value={subject} onValueChange={(v) => setSubject(v as Subject)}>
-          <TabsList className="grid grid-cols-3 w-full">
+          <TabsList className="grid grid-cols-4 w-full">
             {SUBJECTS.map(s => (
               <TabsTrigger key={s} value={s} className="text-xs">{s}</TabsTrigger>
             ))}
