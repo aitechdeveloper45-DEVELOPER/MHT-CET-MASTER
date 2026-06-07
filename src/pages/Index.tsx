@@ -182,7 +182,7 @@ const Index = () => {
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 pt-2 sm:pt-4 text-xs sm:text-sm text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <BookOpen className="w-3 h-3 sm:w-4 sm:h-4" />
-                  <span>Physics, Chemistry & Maths</span>
+                  <span>Physics, Chemistry, Maths & Biology</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Brain className="w-3 h-3 sm:w-4 sm:h-4" />
