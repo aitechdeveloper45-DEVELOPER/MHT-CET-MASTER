@@ -125,9 +125,9 @@ const Index = () => {
   const stats = [
     { value: "Physics", label: "Subject" },
     { value: "Chemistry", label: "Subject" },
-    { value: "MCQ", label: "Practice Format" },
     { value: "Maths", label: "Subject" },
     { value: "Biology", label: "Subject" },
+    { value: "MCQ", label: "Practice Format" },
   ];
 
   return (
@@ -200,7 +200,13 @@ const Index = () => {
         <div className="container mx-auto px-3 sm:px-4 py-8 sm:py-12">
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-8">
             {stats.map((stat, index) => (
-              <div key={index} className="text-center space-y-1 sm:space-y-2 animate-in fade-in zoom-in duration-500" style={{ animationDelay: `${index * 100}ms` }}>
+              <div
+                key={index}
+                className={`text-center space-y-1 sm:space-y-2 animate-in fade-in zoom-in duration-500 ${
+                  index === 4 ? "col-span-2 lg:col-span-1" : ""
+                }`}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
                 <div className="text-2xl sm:text-4xl lg:text-5xl font-bold bg-gradient-hero bg-clip-text text-transparent">
                   {stat.value}
                 </div>
