@@ -311,15 +311,25 @@ const Auth = () => {
           <CardHeader className="text-center space-y-2">
             <CardTitle className="text-3xl font-bold">Welcome</CardTitle>
             <CardDescription className="text-base">
-              Sign in to continue your CET preparation journey
+              New here? Create an account. Already have one? Sign in.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="login" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6">
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+            <Tabs defaultValue="signup" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-2 h-auto">
+                <TabsTrigger value="signup" className="flex-col py-2 gap-0.5">
+                  <span className="font-semibold">I'm New</span>
+                  <span className="text-[10px] opacity-80">Create account</span>
+                </TabsTrigger>
+                <TabsTrigger value="login" className="flex-col py-2 gap-0.5">
+                  <span className="font-semibold">I have an account</span>
+                  <span className="text-[10px] opacity-80">Sign in</span>
+                </TabsTrigger>
               </TabsList>
+              <p className="text-xs text-center text-muted-foreground mb-4">
+                Tap the correct tab above based on whether you're new or already registered.
+              </p>
+
 
               <TabsContent value="login">
                 <form onSubmit={handleSignIn} className="space-y-4">
