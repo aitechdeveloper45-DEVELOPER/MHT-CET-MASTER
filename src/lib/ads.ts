@@ -1,10 +1,13 @@
 import { Capacitor } from "@capacitor/core";
 import {
   AdMob,
+  BannerAdPluginEvents,
   BannerAdPosition,
   BannerAdSize,
+  InterstitialAdPluginEvents,
+  MaxAdContentRating,
   type BannerAdOptions,
-  type InterstitialAdPluginEvents,
+  type AdMobError,
 } from "@capacitor-community/admob";
 
 // AdMob IDs for MHT CET MASTER
@@ -15,13 +18,47 @@ export const BANNER_AD_UNIT_ID = "ca-app-pub-7641092018364594/5344175642";
 export const isNative = () => Capacitor.isNativePlatform();
 
 let initialized = false;
+let listenersRegistered = false;
+
+const logAdMobError = (source: string, error: unknown) => {
+  const details = error as Partial<AdMobError> | undefined;
+  console.warn(`[AdMob] ${source}`, {
+    code: details?.code,
+    message: details?.message ?? String(error),
+  });
+};
+
+async function registerAdListeners() {
+  if (listenersRegistered) return;
+  listenersRegistered = true;
+  await Promise.all([
+    AdMob.addListener(BannerAdPluginEvents.Loaded, () => console.info("[AdMob] Banner loaded")),
+    AdMob.addListener(BannerAdPluginEvents.FailedToLoad, (error) => logAdMobError("Banner failed to load", error)),
+    AdMob.addListener(InterstitialAdPluginEvents.Loaded, (info) => console.info("[AdMob] Interstitial loaded", info)),
+    AdMob.addListener(InterstitialAdPluginEvents.FailedToLoad, (error) => logAdMobError("Interstitial failed to load", error)),
+    AdMob.addListener(InterstitialAdPluginEvents.FailedToShow, (error) => logAdMobError("Interstitial failed to show", error)),
+  ]);
+}
+
 export async function initAds() {
   if (!isNative() || initialized) return;
   try {
-    await AdMob.initialize({ initializeForTesting: false });
+    await registerAdListeners();
+    await AdMob.initialize({
+      initializeForTesting: false,
+      tagForChildDirectedTreatment: false,
+      tagForUnderAgeOfConsent: false,
+      maxAdContentRating: MaxAdContentRating.ParentalGuidance,
+    });
     initialized = true;
+    console.info("[AdMob] Initialized", {
+      platform: Capacitor.getPlatform(),
+      appId: ADMOB_APP_ID,
+      bannerId: BANNER_AD_UNIT_ID,
+      interstitialId: INTERSTITIAL_AD_UNIT_ID,
+    });
   } catch (e) {
-    console.warn("AdMob init failed", e);
+    logAdMobError("Init failed", e);
   }
 }
 
@@ -29,11 +66,11 @@ export async function showInterstitial() {
   if (!isNative()) return false;
   try {
     await initAds();
-    await AdMob.prepareInterstitial({ adId: INTERSTITIAL_AD_UNIT_ID });
+    await AdMob.prepareInterstitial({ adId: INTERSTITIAL_AD_UNIT_ID, isTesting: false });
     await AdMob.showInterstitial();
     return true;
   } catch (e) {
-    console.warn("Interstitial failed", e);
+    logAdMobError("Interstitial failed", e);
     return false;
   }
 }
@@ -44,13 +81,14 @@ export async function showBanner() {
     await initAds();
     const options: BannerAdOptions = {
       adId: BANNER_AD_UNIT_ID,
+      isTesting: false,
       adSize: BannerAdSize.ADAPTIVE_BANNER,
       position: BannerAdPosition.BOTTOM_CENTER,
       margin: 0,
     };
     await AdMob.showBanner(options);
   } catch (e) {
-    console.warn("Banner failed", e);
+    logAdMobError("Banner failed", e);
   }
 }
 
