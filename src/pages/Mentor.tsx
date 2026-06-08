@@ -74,7 +74,16 @@ const Mentor = () => {
       const { data, error } = await supabase.functions.invoke("ai-mentor", {
         body: { message: trimmed },
       });
-      if (error) throw error;
+      if (error) {
+        // Try to surface real backend error message instead of generic "non-2xx"
+        const ctx: any = (error as any).context;
+        let detail = error.message;
+        try {
+          const body = await ctx?.json?.();
+          if (body?.error) detail = body.error;
+        } catch {}
+        throw new Error(detail);
+      }
       if (data?.error) throw new Error(data.error);
       setMessages((m) => [...m, { role: "assistant", content: data.reply }]);
     } catch (e: any) {
