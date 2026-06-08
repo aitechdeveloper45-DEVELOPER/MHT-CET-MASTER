@@ -94,5 +94,9 @@ export async function showBanner() {
 
 export async function hideBanner() {
   if (!isNative()) return;
-  try { await AdMob.hideBanner(); } catch {}
+  try {
+    await AdMob.hideBanner();
+  } catch (e) {
+    logAdMobError("Hide banner failed", e);
+  }
 }
