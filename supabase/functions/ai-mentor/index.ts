@@ -103,13 +103,14 @@ When the user asks for a plan, generate concrete daily/weekly schedules referenc
         "Authorization": `Bearer ${Deno.env.get("LOVABLE_API_KEY")}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash-lite",
+        model: "google/gemini-2.5-flash",
         messages,
       }),
     });
 
     if (!aiRes.ok) {
       const errText = await aiRes.text();
+      console.error("AI gateway error:", aiRes.status, errText);
       if (aiRes.status === 429) {
         return new Response(JSON.stringify({ error: "Rate limit reached. Please try again in a moment." }), {
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
