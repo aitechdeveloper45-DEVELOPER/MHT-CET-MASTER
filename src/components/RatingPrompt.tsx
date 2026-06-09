@@ -5,72 +5,48 @@ import { Button } from "@/components/ui/button";
 import { Star } from "lucide-react";
 
 const KEYS = {
-  installedAt: "rating_installed_at",
-  testsCompleted: "rating_tests_completed",
   rated: "rating_submitted",
   remindAt: "rating_remind_at",
 } as const;
 
-const PLAY_URL = "https://play.google.com/store/apps/details?id=app.lovable.0bce6dfdcadc450496bf804b52ba13f7";
+const PACKAGE_ID = "app.lovable.bcfa162408034f569134b5f4b45221c2";
+const PLAY_URL = `https://play.google.com/store/apps/details?id=${PACKAGE_ID}`;
+const MARKET_URL = `market://details?id=${PACKAGE_ID}`;
+
+const openPlayStore = () => {
+  // WebView / Android: market:// triggers Play Store app directly
+  try {
+    if (Capacitor.getPlatform() === "android") {
+      window.location.href = MARKET_URL;
+      setTimeout(() => { window.location.href = PLAY_URL; }, 600);
+      return;
+    }
+  } catch {}
+  window.open(PLAY_URL, "_blank") || (window.location.href = PLAY_URL);
+};
 
 const RatingPrompt = () => {
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(0);
 
   useEffect(() => {
-    // First-run install timestamp
-    if (!localStorage.getItem(KEYS.installedAt)) {
-      localStorage.setItem(KEYS.installedAt, Date.now().toString());
-    }
-
-    // Listen for test completions
-    const onTestDone = () => {
-      const n = parseInt(localStorage.getItem(KEYS.testsCompleted) || "0", 10) + 1;
-      localStorage.setItem(KEYS.testsCompleted, n.toString());
-      maybeShow();
-    };
-    window.addEventListener("test-completed", onTestDone);
-
-    const maybeShow = () => {
-      if (localStorage.getItem(KEYS.rated) === "1") return;
-      const remindAt = parseInt(localStorage.getItem(KEYS.remindAt) || "0", 10);
-      if (remindAt && Date.now() < remindAt) return;
-
-      const tests = parseInt(localStorage.getItem(KEYS.testsCompleted) || "0", 10);
-      const installedAt = parseInt(localStorage.getItem(KEYS.installedAt) || "0", 10);
-      const days = installedAt ? (Date.now() - installedAt) / (1000 * 60 * 60 * 24) : 0;
-
-      if (tests >= 2 || days >= 7) {
-        // Slight delay to avoid colliding with navigation
-        setTimeout(() => setOpen(true), 1200);
-      }
-    };
-
-    maybeShow();
-    return () => window.removeEventListener("test-completed", onTestDone);
+    if (localStorage.getItem(KEYS.rated) === "1") return;
+    const remindAt = parseInt(localStorage.getItem(KEYS.remindAt) || "0", 10);
+    if (remindAt && Date.now() < remindAt) return;
+    const t = setTimeout(() => setOpen(true), 2000);
+    return () => clearTimeout(t);
   }, []);
 
   const handleLater = () => {
-    const fourteenDays = 14 * 24 * 60 * 60 * 1000;
-    localStorage.setItem(KEYS.remindAt, (Date.now() + fourteenDays).toString());
+    const threeDays = 3 * 24 * 60 * 60 * 1000;
+    localStorage.setItem(KEYS.remindAt, (Date.now() + threeDays).toString());
     setOpen(false);
   };
 
-  const handleRate = async () => {
+  const handleStarClick = (stars: number) => {
     localStorage.setItem(KEYS.rated, "1");
     setOpen(false);
-    try {
-      if (Capacitor.isNativePlatform()) {
-        const mod: any = await import("@capacitor-community/in-app-review");
-        if (mod?.InAppReview?.requestReview) {
-          await mod.InAppReview.requestReview();
-          return;
-        }
-      }
-    } catch (e) {
-      console.warn("In-app review unavailable, falling back to Play Store", e);
-    }
-    window.open(PLAY_URL, "_blank");
+    openPlayStore();
   };
 
   return (
@@ -82,23 +58,28 @@ const RatingPrompt = () => {
             Your feedback helps us improve and helps other students discover the app.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex justify-center gap-1 py-3" onMouseLeave={() => setHover(0)}>
+        <div className="flex justify-center gap-2 py-4" onMouseLeave={() => setHover(0)}>
           {[1, 2, 3, 4, 5].map((i) => (
-            <Star
+            <button
               key={i}
-              className={`w-9 h-9 transition-transform ${
-                i <= hover ? "fill-yellow-400 text-yellow-400 scale-110" : "text-muted-foreground"
-              }`}
+              type="button"
               onMouseEnter={() => setHover(i)}
-            />
+              onClick={() => handleStarClick(i)}
+              className="p-1"
+              aria-label={`Rate ${i} stars`}
+            >
+              <Star
+                className={`w-10 h-10 transition-transform ${
+                  i <= hover ? "fill-yellow-400 text-yellow-400 scale-110" : "text-muted-foreground"
+                }`}
+              />
+            </button>
           ))}
         </div>
-        <DialogFooter className="flex-row gap-2 sm:justify-center">
+        <p className="text-center text-xs text-muted-foreground">Tap a star to rate us on Play Store</p>
+        <DialogFooter className="flex-row gap-2 sm:justify-center pt-2">
           <Button variant="outline" className="flex-1" onClick={handleLater}>
             Maybe Later
-          </Button>
-          <Button variant="hero" className="flex-1" onClick={handleRate}>
-            Rate Now
           </Button>
         </DialogFooter>
       </DialogContent>
