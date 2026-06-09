@@ -90,35 +90,40 @@ STUDENT'S CURRENT PROFILE:
 
 When the user asks for a plan, generate concrete daily/weekly schedules referencing the weakest topics above and remaining time. Always cite their actual numbers. End with an estimated mark improvement or encouragement.`;
 
-    const messages = [
-      { role: "system", content: systemPrompt },
-      ...history.map((m: any) => ({ role: m.role, content: m.content })),
-      { role: "user", content: message },
+    // Google Gemini API (free tier) — uses GEMINI_API_KEY from Google AI Studio
+    const geminiKey = Deno.env.get("GEMINI_API_KEY");
+    if (!geminiKey) {
+      return new Response(JSON.stringify({ error: "GEMINI_API_KEY not configured" }), {
+        status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const contents = [
+      ...history.map((m: any) => ({
+        role: m.role === "assistant" ? "model" : "user",
+        parts: [{ text: m.content }],
+      })),
+      { role: "user", parts: [{ text: message }] },
     ];
 
-    const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${Deno.env.get("LOVABLE_API_KEY")}`,
-      },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages,
-      }),
-    });
+    const aiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: systemPrompt }] },
+          contents,
+        }),
+      }
+    );
 
     if (!aiRes.ok) {
       const errText = await aiRes.text();
-      console.error("AI gateway error:", aiRes.status, errText);
+      console.error("Gemini API error:", aiRes.status, errText);
       if (aiRes.status === 429) {
-        return new Response(JSON.stringify({ error: "Rate limit reached. Please try again in a moment." }), {
+        return new Response(JSON.stringify({ error: "Rate limit reached. Please wait a moment and try again." }), {
           status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-      if (aiRes.status === 402) {
-        return new Response(JSON.stringify({ error: "AI credits exhausted. Please add credits in workspace settings." }), {
-          status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" },
         });
       }
       return new Response(JSON.stringify({ error: "AI service error", details: errText }), {
@@ -127,7 +132,9 @@ When the user asks for a plan, generate concrete daily/weekly schedules referenc
     }
 
     const aiJson = await aiRes.json();
-    const reply: string = aiJson.choices?.[0]?.message?.content ?? "Sorry, I couldn't generate a response.";
+    const reply: string =
+      aiJson.candidates?.[0]?.content?.parts?.map((p: any) => p.text).join("") ??
+      "Sorry, I couldn't generate a response.";
 
     // Persist both messages
     await supabase.from("mentor_messages").insert([
