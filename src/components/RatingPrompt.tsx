@@ -9,7 +9,7 @@ const KEYS = {
   remindAt: "rating_remind_at",
 } as const;
 
-const PACKAGE_ID = "app.lovable.bcfa162408034f569134b5f4b45221c2";
+const PACKAGE_ID = "com.aitechdeveloper.app";
 const PLAY_URL = `https://play.google.com/store/apps/details?id=${PACKAGE_ID}`;
 const MARKET_URL = `market://details?id=${PACKAGE_ID}`;
 
