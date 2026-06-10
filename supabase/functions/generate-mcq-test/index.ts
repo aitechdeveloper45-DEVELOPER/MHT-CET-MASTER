@@ -122,13 +122,15 @@ serve(async (req) => {
     }
     // ============= END INPUT VALIDATION =============
 
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     
-    if (!LOVABLE_API_KEY) {
-      throw new Error("LOVABLE_API_KEY is not configured");
+    if (!GEMINI_API_KEY) {
+      throw new Error("GEMINI_API_KEY is not configured");
     }
+
+    const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions";
 
     // Handle Full CET Test generation
     if (fullCETTest) {
@@ -146,7 +148,7 @@ serve(async (req) => {
         { subject: 'Mathematics', part: 2, count: 25, focus: 'Mixed', topics: "Mathematical Logic, Pair of Straight Lines, Circle, Conics, Vectors, Three Dimensional Geometry, Linear Programming, Trigonometric Functions, Sequences and Series" },
       ];
 
-      const selectedModel = "google/gemini-2.5-flash";
+      const selectedModel = "gemini-2.0-flash";
       const startTime = Date.now();
 
       const generateBatch = async (batch: typeof batches[0]): Promise<any[]> => {
@@ -162,10 +164,10 @@ Return ONLY a valid JSON array, no markdown.
 Format: [{"question":"...","options":["A","B","C","D"],"correctAnswer":0,"explanation":"...","topic":"...","difficulty":"easy|medium|hard"}]`;
 
         try {
-          const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+          const resp = await fetch(GEMINI_URL, {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${LOVABLE_API_KEY}`,
+              Authorization: `Bearer ${GEMINI_API_KEY}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
@@ -276,8 +278,8 @@ Format: [{"question":"...","options":["A","B","C","D"],"correctAnswer":0,"explan
 
     console.log(`Generating ${numQuestions} ${difficulty} questions for ${subject}`);
 
-    // Select optimal AI model based on test parameters
-    const selectedModel = selectOptimalModel(difficulty, numQuestions, false, subject);
+    // Use Gemini 2.0 Flash directly
+    const selectedModel = "gemini-2.0-flash";
 
     // Initialize Supabase client
     const supabase = createClient(SUPABASE_URL!, SUPABASE_SERVICE_ROLE_KEY!);
@@ -349,14 +351,12 @@ Format: [{"question":"...","options":["A","B","C","D"],"correctAnswer":0,"explan
     // Higher token budget to prevent truncation - 300 tokens per question with 1.5x buffer
     const maxTokens = Math.min(Math.ceil(numQuestions * 300 * 1.5), 32000);
 
-    // Use correct token parameter based on model provider
-    const isOpenAI = selectedModel.startsWith("openai/");
-    const tokenParam = isOpenAI ? { max_completion_tokens: maxTokens } : { max_tokens: maxTokens };
+    const tokenParam = { max_tokens: maxTokens };
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch(GEMINI_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${GEMINI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -486,11 +486,11 @@ Format: [{"question":"...","options":["A","B","C","D"],"correctAnswer":0,"explan
       if (shortfall >= 3) {
         console.log(`Retrying to generate ${shortfall} additional questions...`);
         try {
-          const retryTokenParam = isOpenAI ? { max_completion_tokens: Math.ceil(shortfall * 250) } : { max_tokens: Math.ceil(shortfall * 250) };
-          const retryResp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+          const retryTokenParam = { max_tokens: Math.ceil(shortfall * 250) };
+          const retryResp = await fetch(GEMINI_URL, {
             method: "POST",
             headers: {
-              Authorization: `Bearer ${LOVABLE_API_KEY}`,
+              Authorization: `Bearer ${GEMINI_API_KEY}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
